@@ -1,0 +1,13 @@
+# Chapter 0 — Step 0: load & inference an Open Telco model on CPU.
+# Deliberately minimal. GPU / Databricks deps arrive in later chapters.
+
+sentence-transformers>=3.0.0
+transformers>=4.40.0        # Chapter 1 reranker (OTel-Reranker-0.6B, trust_remote_code=True)
+# torch is pulled in by sentence-transformers; a CPU build is fine for Chapters 0-1.
+# On Databricks, torch + transformers are already on the ML runtime.
+
+# Notebook runtime (skip if you already have Jupyter, or run on Databricks):
+jupyterlab>=4.0.0
+
+# numpy 2 can break some DBR/GPU repls; pin low if you hit issues on a cluster.
+# numpy<2

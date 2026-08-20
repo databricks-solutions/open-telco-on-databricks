@@ -3,3 +3,16 @@
 __pycache__
 .idea/
 .env
+
+# --- project ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.cache/
+hf_cache/
+*.safetensors
+models/
+otel_trace_*.json
+.vscode/
