@@ -8,7 +8,7 @@ Databricks — from a laptop (CPU, no account) all the way to a live, governed d
 
 > **OTel here means _Open Telco_,** It is a family of telecom-domain
 > fine-tuned models (embedding · reranker · LLM · safety) trained on 3GPP, GSMA, and O-RAN
-> standards, published on HuggingFace
+> standards, published on
 > [`HuggingFace`](https://huggingface.co/farbodtavakkoli).
 
 ## The vision, in one picture
