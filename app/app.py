@@ -675,15 +675,15 @@ button.ghost{background:transparent;color:var(--ink2);border:1px solid var(--bor
 .svglabel{fill:#6d6c66;font-size:10px;letter-spacing:.14em;text-anchor:middle}
 /* react stream */
 .stream{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards}
+.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards;min-width:0}
 @keyframes in{to{opacity:1;transform:none}}
 .round .rh{background:var(--panel2);padding:7px 11px;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:650}
-.step{padding:8px 12px;font-size:12.8px;line-height:1.5;border-top:1px solid var(--grid)}
+.step{padding:8px 12px;font-size:12.8px;line-height:1.5;border-top:1px solid var(--grid);overflow-wrap:anywhere;word-break:break-word}
 .step:first-of-type{border-top:0}
 .lab{display:inline-block;font-weight:750;font-size:10.5px;letter-spacing:.05em;padding:1px 7px;border-radius:5px;margin-right:8px;vertical-align:1px}
 .lab.think{background:#16233a;color:#7fb0ee}.lab.act{background:#2a1a12;color:#f0a074}
 .lab.obs{background:#0f2a1f;color:#5fcf9f}.lab.refl{background:#1e1a33;color:#b3a7f5}.lab.final{background:#0f2a10;color:#67d267}
-code{font-family:ui-monospace,Menlo,monospace;font-size:11.6px;color:var(--ink2)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:11.6px;color:var(--ink2);white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
 .mono{font-family:ui-monospace,Menlo,monospace}
 /* tool log */
 table{width:100%;border-collapse:collapse;font-size:11.6px}

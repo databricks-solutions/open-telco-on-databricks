@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "host": "https://fevm-cmegdemos.cloud.databricks.com",
+  "remote_path": "/Workspace/Users/razi.bayati@databricks.com/otel-vision-src",
+  "last_modified_times": {
+    "app.py": "2026-08-20T18:52:48.034732057-07:00",
+    "app.yaml": "2026-08-20T18:40:52.533172152-07:00",
+    "backends.py": "2026-08-20T18:40:52.533536736-07:00",
+    "requirements.txt": "2026-08-20T18:40:52.533715152-07:00"
+  },
+  "local_to_remote_names": {
+    "app.py": "app.py",
+    "app.yaml": "app.yaml",
+    "backends.py": "backends.py",
+    "requirements.txt": "requirements.txt"
+  },
+  "remote_to_local_names": {
+    "app.py": "app.py",
+    "app.yaml": "app.yaml",
+    "backends.py": "backends.py",
+    "requirements.txt": "requirements.txt"
+  }
+}
