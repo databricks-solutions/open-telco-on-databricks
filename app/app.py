@@ -674,8 +674,10 @@ button.ghost{background:transparent;color:var(--ink2);border:1px solid var(--bor
 .bbox.act rect{stroke:var(--blue);stroke-width:2.4;fill:#16233a}
 .svglabel{fill:#6d6c66;font-size:10px;letter-spacing:.14em;text-anchor:middle}
 /* react stream */
-.stream{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards;min-width:0}
+.stream{max-height:520px;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px}
+/* Big screens: trace card fills its grid cell (matches the 3 right-hand blocks); stream grows */
+@media(min-width:961px){#tracecard{display:flex;flex-direction:column}#tracecard>h2{flex:0 0 auto}#tracecard .stream{flex:1 1 auto;max-height:none}}
+.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards;min-width:0;flex-shrink:0}
 @keyframes in{to{opacity:1;transform:none}}
 .round .rh{background:var(--panel2);padding:7px 11px;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:650}
 .step{padding:8px 12px;font-size:12.8px;line-height:1.5;border-top:1px solid var(--grid);overflow-wrap:anywhere;word-break:break-word}
@@ -789,7 +791,7 @@ ol{margin:8px 0 0;padding-left:18px;font-size:12.6px;line-height:1.55}
 </div>
 
 <div class="grid">
-  <div class="card">
+  <div class="card" id="tracecard">
     <h2>ReAct loop — live trace</h2>
     <div class="stream" id="stream"><div class="muted" style="font-size:12.5px">Pick a scenario and press “Run agent”.</div></div>
   </div>
