@@ -1,0 +1,22 @@
+command: ["python", "app.py"]
+env:
+  # OTEL_MODE=real wires the app to governed UC data + Vector Search + a served OTel LLM.
+  # Remove/blank OTEL_MODE and OTEL_LLM_ENDPOINT to fall back to the offline mock demo.
+  - name: OTEL_MODE
+    value: "real"
+  - name: OTEL_CATALOG
+    value: "cmegdemos_catalog"
+  - name: OTEL_SCHEMA
+    value: "otel_selfhealing"
+  - name: OTEL_WAREHOUSE_ID
+    value: "3dca5b181c86a82c"
+  - name: OTEL_EMB_ENDPOINT
+    value: "otel-selfhealing-embedding"
+  - name: OTEL_VS_ENDPOINT
+    value: "otel_selfhealing_vs"
+  - name: OTEL_INDEX
+    value: "cmegdemos_catalog.otel_selfhealing.standards_index"
+  # Reasoning brain: our own served OTel LLM (OpenAI-chat contract), stood up by
+  # deploy/02_serve_llm.py and governed + grantable by us.
+  - name: OTEL_LLM_ENDPOINT
+    value: "otel-selfhealing-llm"

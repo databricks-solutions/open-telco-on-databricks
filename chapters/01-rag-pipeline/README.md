@@ -53,7 +53,7 @@ low throughput at low load"), it retrieves the right 3GPP/O-RAN clause and hands
 **cited, trustworthy** basis for its diagnosis — or honestly abstains.
 
 In [Chapter 2](../02-agent-loop/) this pipeline becomes the `retrieve_standards` step of the
-autonomous ReAct agent in [`otel.py`](../../otel.py), replacing its placeholder keyword match.
+autonomous ReAct agent in [`app/app.py`](../../app/app.py), replacing its placeholder keyword match.
 That's the moment the north-star loop starts running on real OTel intelligence.
 
 ---
