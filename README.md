@@ -6,7 +6,7 @@ models and building them into a governed, observable "self-healing network" assi
 Databricks — from a laptop (CPU, no account) all the way to a live, governed deployment.
 ```
 
-> **OTel here means _Open Telco_, not OpenTelemetry.** It is a family of telecom-domain
+> **OTel here means _Open Telco_,** It is a family of telecom-domain
 > fine-tuned models (embedding · reranker · LLM · safety) trained on 3GPP, GSMA, and O-RAN
 > standards, published on HuggingFace under
 > [`farbodtavakkoli`](https://huggingface.co/farbodtavakkoli).
