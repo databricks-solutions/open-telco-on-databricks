@@ -16,3 +16,6 @@ hf_cache/
 models/
 otel_trace_*.json
 .vscode/
+
+# databricks CLI sync artifacts
+.databricks/
