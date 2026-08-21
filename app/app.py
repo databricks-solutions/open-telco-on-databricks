@@ -675,7 +675,7 @@ button.ghost{background:transparent;color:var(--ink2);border:1px solid var(--bor
 .svglabel{fill:#6d6c66;font-size:10px;letter-spacing:.14em;text-anchor:middle}
 /* react stream */
 .stream{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards;min-width:0}
+.round{border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transform:translateY(6px);animation:in .3s forwards;min-width:0;flex-shrink:0}
 @keyframes in{to{opacity:1;transform:none}}
 .round .rh{background:var(--panel2);padding:7px 11px;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:650}
 .step{padding:8px 12px;font-size:12.8px;line-height:1.5;border-top:1px solid var(--grid);overflow-wrap:anywhere;word-break:break-word}
