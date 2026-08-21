@@ -236,6 +236,16 @@ TOOL_TO_BACKEND = {  # for the data-flow diagram
     "get_bss_data": "BSS", "retrieve_standards": "KB",
 }
 
+# When OTEL_MODE=real, point the tool registry at the governed UC/Vector Search backends
+# (synthetic stand-ins remain the fallback for local / offline runs).
+if os.environ.get("OTEL_MODE") == "real":
+    try:
+        import backends
+        backends.wire(TOOLS)
+        print("[otel] real mode: tools wired to Unity Catalog + Vector Search", file=sys.stderr)
+    except Exception as e:
+        print(f"[warn] real backends unavailable ({e}); using synthetic tools.", file=sys.stderr)
+
 
 # =============================================================================
 # 4. LLM BACKENDS  (pluggable reasoning brain)
@@ -417,7 +427,39 @@ def _extract_json(text):
     return json.loads(text)
 
 
+class HybridLLM:
+    """Real-mode brain: a deterministic planner drives the ReAct tool sequence (fast, robust),
+    and the served OTel LLM authors the final grounded diagnosis in a single call over the real
+    UC data + real Vector Search citations. Set OTEL_LLM_FULL_REACT=1 to have the OTel LLM drive
+    every step instead (slower; needs a warm endpoint)."""
+    def __init__(self, dbllm):
+        self.mock = MockLLM()
+        self.db = dbllm
+        self.name = f"OTel LLM final-synthesis ({dbllm.ep}) + deterministic planner"
+
+    def policy(self, goal, scratchpad, tools):
+        step = self.mock.policy(goal, scratchpad, tools)
+        if "final" in step:
+            try:
+                step["final"] = self.db.synthesize_final(goal, scratchpad)
+            except Exception as e:
+                print(f"[otel] final-synthesis fallback to deterministic diagnosis: {e}", file=sys.stderr)
+        return step
+
+    def reflect(self, goal, scratchpad):
+        return self.mock.reflect(goal, scratchpad)
+
+
 def make_llm():
+    if os.environ.get("OTEL_LLM_ENDPOINT"):
+        try:
+            import backends
+            dbllm = backends.DatabricksLLM(fallback=MockLLM())
+            if os.environ.get("OTEL_LLM_FULL_REACT"):
+                return dbllm
+            return HybridLLM(dbllm)
+        except Exception as e:
+            print(f"[warn] Databricks OTel LLM backend unavailable ({e}); using MockLLM.", file=sys.stderr)
     if os.environ.get("OTEL_LLM", "").lower() == "claude" and os.environ.get("ANTHROPIC_API_KEY"):
         try:
             return ClaudeLLM()
@@ -507,6 +549,8 @@ class ReActAgent:
 
 
 def _summarize(tool, result):
+    if isinstance(result, dict) and "error" in result:
+        return f"error: {str(result['error'])[:160]}"
     if not isinstance(result, dict):
         return str(result)[:120]
     if tool == "get_network_kpis":
@@ -564,9 +608,14 @@ class Handler(BaseHTTPRequestHandler):
         # allow a custom incident override
         if payload.get("incident"):
             scenario = dict(scenario); scenario["incident"] = payload["incident"]
-        agent = ReActAgent(make_llm())
-        result = agent.run(scenario)
-        self._send(200, "application/json", json.dumps(result))
+        try:
+            agent = ReActAgent(make_llm())
+            result = agent.run(scenario)
+            self._send(200, "application/json", json.dumps(result))
+        except Exception as e:  # never 502 — surface the error to the UI instead of crashing
+            import traceback
+            self._send(200, "application/json", json.dumps(
+                {"error": str(e), "trace": traceback.format_exc()[-3000:]}))
 
 
 # --- The UI (single-page; animates the returned events, draws data flow + spans) ---
@@ -881,9 +930,13 @@ $("#dl").addEventListener("click",()=>{
 # 7. MAIN
 # =============================================================================
 def main():
+    # Databricks Apps injects the port to bind via DATABRICKS_APP_PORT and expects the
+    # server to listen on 0.0.0.0. Fall back to sensible local defaults otherwise.
+    default_port = int(os.environ.get("DATABRICKS_APP_PORT", os.environ.get("PORT", 8000)))
+    default_host = "0.0.0.0" if os.environ.get("DATABRICKS_APP_PORT") else "127.0.0.1"
     ap = argparse.ArgumentParser(description="OTel ReAct agent demo server")
-    ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--port", type=int, default=8000)
+    ap.add_argument("--host", default=default_host)
+    ap.add_argument("--port", type=int, default=default_port)
     ap.add_argument("--selftest", action="store_true", help="run the loop in the terminal and exit")
     args = ap.parse_args()
 

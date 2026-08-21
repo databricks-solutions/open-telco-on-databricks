@@ -16,11 +16,11 @@ Instead of manually pulling KPIs from the OSS, cross-checking alarms, rememberin
 agent** that does exactly that — transparently, and always ending in a recommendation a human
 signs off on.
 
-That agent already exists in this repo as a runnable demo: [`otel.py`](../../otel.py).
+That agent already exists in this repo as a runnable demo: [`app/app.py`](../../app/app.py).
 
 ```bash
-python3 otel.py            # then open http://127.0.0.1:8000
-python3 otel.py --selftest # or watch the loop run in your terminal
+python3 app/app.py            # then open http://127.0.0.1:8000
+python3 app/app.py --selftest # or watch the loop run in your terminal
 ```
 
 It runs a generic **ReAct + reflection** loop:
@@ -40,10 +40,10 @@ It runs a generic **ReAct + reflection** loop:
 Every LLM decision and tool call is captured as **OpenTelemetry-style spans** — a full,
 exportable trace of the agent's reasoning.
 
-**This is the experience we are building toward.** But two pieces of `otel.py` are
+**This is the experience we are building toward.** But two pieces of `app/app.py` are
 deliberately fake, and the whole point of this repo is to make them real:
 
-| Stand-in in `otel.py` | What it becomes |
+| Stand-in in `app/app.py` | What it becomes |
 |---|---|
 | `MockLLM` reasoning brain | The **Open Telco LLM** (`OTel-2.0-LLM-*-IT`), served on Databricks |
 | `retrieve_standards` — a keyword match over 6 hard-coded snippets | The **OTel Embedding + Reranker** models over a real telco corpus in **Vector Search** |
@@ -103,11 +103,11 @@ model that runs on a laptop CPU.
 
 It loads [`OTel-Embedding-335M`](https://huggingface.co/farbodtavakkoli/OTel-Embedding-335M)
 (BGE-large based, ~335M params, CPU-fine) and uses it to run **real semantic retrieval** over
-a tiny corpus of telecom-standards snippets — the very snippets the `otel.py` agent cites in
+a tiny corpus of telecom-standards snippets — the very snippets the `app/app.py` agent cites in
 its `retrieve_standards` tool.
 
 So Step 0 isn't a toy: it is the first genuine component of the north-star loop, swapping
-`otel.py`'s keyword match for actual OTel embeddings.
+`app/app.py`'s keyword match for actual OTel embeddings.
 
 ```bash
 pip install -r ../../requirements.txt
@@ -124,6 +124,6 @@ laptop, still CPU-only. It's the pattern a production Databricks self-healing NO
 ground its answers, isolated so you can see every moving part, with its hard-won lessons
 (vector normalization, reranker validation, safe abstention) taught up front.
 
-From there: **Chapter 2** wires that pipeline into the `otel.py` agent loop, and
+From there: **Chapter 2** wires that pipeline into the `app/app.py` agent loop, and
 **Chapters 3–4** take it to Databricks — Unity Catalog registration, Model Serving, Vector
 Search, and (the part most demos skip) full inference capture with monitoring.

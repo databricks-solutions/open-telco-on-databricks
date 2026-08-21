@@ -9,11 +9,11 @@ intelligence. Still on your laptop._
 ## Where this sits
 
 [Chapter 1](../01-rag-pipeline/) built the grounding pipeline as a standalone function.
-[`otel.py`](../../otel.py) (the repo's north-star demo) is an autonomous **ReAct + reflection**
+[`app/app.py`](../../app/app.py) (the repo's north-star demo) is an autonomous **ReAct + reflection**
 agent — Think → Act → Observe → Reflect — that troubleshoots a network fault by calling
 OSS/BSS/KPI tools and a `retrieve_standards` tool.
 
-But in `otel.py` that `retrieve_standards` tool is a **keyword match** over a handful of
+But in `app/app.py` that `retrieve_standards` tool is a **keyword match** over a handful of
 hard-coded snippets. **This chapter swaps it for the OTel pipeline from Chapter 1** — so when
 the agent reaches for standards to ground its diagnosis, it does *real semantic retrieval*.
 
@@ -50,7 +50,7 @@ This is the moment the pieces become a *system*. The agent doesn't just retrieve
 **reasons over grounded evidence** and stops at a recommendation a human signs off on. That's
 the shape of a self-healing loop you can actually trust near a live network.
 
-The full [`otel.py`](../../otel.py) adds a browser UI, OpenTelemetry-style span tracing, and a
+The full [`app/app.py`](../../app/app.py) adds a browser UI, OpenTelemetry-style span tracing, and a
 pluggable reasoning brain (mock → Claude → an OTel LLM). This chapter keeps it CPU-simple and
 focuses on the one swap that makes it real: **OTel as the grounding brain.**
 
