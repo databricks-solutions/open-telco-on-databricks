@@ -53,11 +53,9 @@ See [`deploy/README.md`](./deploy/README.md) for the details.
 
 ## Video Overview
 
-> **[Add a GIF here]** A ~30-60s screen capture is the fastest way to convey the demo.
->
-> **Capture:** launch the app (`./deploy/deploy.sh <profile>` for the live version, or `python app/app.py` locally), open it, pick a scenario, and record the ReAct loop animating end to end with QuickTime / Zoom / Loom / [LICEcap](https://www.cockos.com/licecap/) / `ffmpeg`. Trim to the run, export as a GIF (<= ~10 MB), commit it to `docs/overview.gif`, and embed it here:
->
-> `![OTel self-healing demo](docs/overview.gif)`
+![OTel self-healing demo — the live ReAct loop grounding, reasoning, and recommending](docs/Overview.gif)
+
+_A short capture of the app: pick a scenario and watch the ReAct loop (Think -> Act -> Observe -> Reflect) call the OTel tools, ground in Vector Search, reason with the served OTel LLM, and end in a human-gated recommendation._
 
 ## Installation
 
