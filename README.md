@@ -3,7 +3,7 @@
 ```
 A chapter-by-chapter, runnable guide to exploring the Open Telco (OTel) telecom-domain
 models and building them into a governed, observable "self-healing network" assistant on
-Databricks — from a laptop (CPU, no account) all the way to a live, governed deployment.
+Databricks. 
 ```
 
 > **OTel here means _Open Telco_,** It is a family of telecom-domain
