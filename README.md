@@ -27,17 +27,18 @@ the real Open Telco models on Databricks.
 
 ## Chapters
 
-Each chapter is a **self-contained notebook** (its narrative is in the notebook itself). Climb
-the ladder on your **laptop** first (Chapters 0–2, CPU-only, no account), then **productionize on
-Databricks** (Chapters 3–4).
+Each chapter is a **self-contained notebook** (its narrative is in the notebook itself), and they
+all run on Databricks — serverless or a cluster. Work the ladder in order: Chapters 0–2 build the
+intuition (load a model, assemble the RAG pipeline, run the agent loop), then Chapters 3–4
+**productionize** it.
 
-| # | Chapter (notebook) | Runs on | What you get |
-|---|--------------------|---------|--------------|
-| 0 | [Vision + Step 0](./notebooks/00_starter_load_and_inference.ipynb) | laptop (CPU) | Load & inference your first OTel model — "it's real" |
-| 1 | [The OTel RAG pipeline](./notebooks/01_otel_rag_pipeline.ipynb) | laptop (CPU) | embed → retrieve → rerank → ground → **abstain**, with production lessons baked in |
-| 2 | [The self-healing agent loop](./notebooks/02_self_healing_agent_loop.ipynb) | laptop (CPU) | A ReAct agent grounded in OTel retrieval, ending in a **human-gated** recommendation |
-| 3 | [Productionize on Databricks](./notebooks/03_productionize_on_databricks.ipynb) | Databricks | Log → Unity Catalog → Model Serving → Vector Search |
-| 4 | [Govern & capture](./notebooks/04_govern_and_capture.ipynb) | Databricks | **Inference tables** + monitoring + cost-economics ledger |
+| # | Chapter (notebook) | What you get |
+|---|--------------------|--------------|
+| 0 | [Vision + Step 0](./notebooks/00_starter_load_and_inference.ipynb) | Load & inference your first OTel model — "it's real" |
+| 1 | [The OTel RAG pipeline](./notebooks/01_otel_rag_pipeline.ipynb) | embed → retrieve → rerank → ground → **abstain**, with production lessons baked in |
+| 2 | [The self-healing agent loop](./notebooks/02_self_healing_agent_loop.ipynb) | A ReAct agent grounded in OTel retrieval, ending in a **human-gated** recommendation |
+| 3 | [Productionize on Databricks](./notebooks/03_productionize_on_databricks.ipynb) | Log → Unity Catalog → Model Serving → Vector Search |
+| 4 | [Govern & capture](./notebooks/04_govern_and_capture.ipynb) | **Inference tables** + monitoring + cost-economics ledger |
 
 ## Make it real (end to end)
 
@@ -59,21 +60,14 @@ _A short capture of the app: pick a scenario and watch the ReAct loop (Think -> 
 
 ## Installation
 
-**Chapters 0–2 (laptop, CPU — no Databricks account required):**
+Clone this repo into your workspace as a Git folder (Repos), or import the notebooks, and run
+them on serverless or a cluster. On serverless / standard clusters run the first `%pip install`
+cell in each notebook (it restarts Python); the ML runtime already ships `torch`/`transformers`.
+Chapters 0–2 download the OTel model weights (embedding ~335M, reranker ~0.6B) from HuggingFace on
+first run and cache them.
 
-```bash
-pip install -r requirements.txt
-jupyter lab notebooks/00_starter_load_and_inference.ipynb
-```
-
-First run downloads the model weights (embedding ~335M, reranker ~0.6B) from HuggingFace and
-caches them. CPU is fine for the small demo corpus.
-
-**Chapters 3–4 (Databricks):** import the notebooks and run on serverless or a cluster (UC write
-access, Model Serving entitlement, and a Vector Search endpoint required). On serverless /
-standard clusters run the first `%pip install` cell (it restarts Python); the ML runtime already
-ships `torch`/`transformers`. These chapters create billable resources — each notebook has a
-cleanup cell.
+Chapters 3–4 additionally need UC write access, a Model Serving entitlement, and a Vector Search
+endpoint, and create billable resources — each notebook has a cleanup cell.
 
 **Full live deployment:** `./deploy/deploy.sh <profile>` (see above).
 

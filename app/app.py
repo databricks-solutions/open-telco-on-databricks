@@ -12,25 +12,32 @@ OpenTelemetry-style traces + spans collected for review and export.
 
 WHY THIS SHAPE
 --------------
-* The LLM "brain" is behind a pluggable interface (LLMBackend). Out of the box
-  it uses a deterministic MockLLM so the demo runs with ZERO setup / no API key.
-* Set ANTHROPIC_API_KEY to route the reasoning through Claude instead (the model
-  you're using now). Later, point the same interface at your OTel-LLM endpoint —
-  nothing else in the loop, tools, or tracing changes.
+* The LLM "brain" and the tools sit behind pluggable interfaces. Deployed on
+  Databricks (OTEL_MODE=real — the default in app.yaml) the brain is a served
+  OTel LLM and the tools read governed Unity Catalog data + Vector Search; see
+  backends.py.
+* If those backends aren't reachable the loop transparently falls back to a
+  deterministic MockLLM + synthetic tools, so it still runs with zero setup
+  (handy for local iteration). Set ANTHROPIC_API_KEY + OTEL_LLM=claude to route
+  reasoning through Claude instead. The loop, tools, and tracing are identical
+  across all three.
 
 RUN IT
 ------
-    python3 otel_react_agent.py
-    # then open the URL it prints (default http://127.0.0.1:8000)
+    # On Databricks (the default): deploy the whole stack — data, served models,
+    # index, and this app — with  ./deploy/deploy.sh <profile>  (see ../deploy/README.md).
 
-    # optional — use Claude as the reasoning engine:
+    # Local offline fallback:
+    python3 app.py            # then open the URL it prints (default http://127.0.0.1:8000)
+
+    # optional — use Claude as the reasoning engine locally:
     export ANTHROPIC_API_KEY=sk-ant-...
-    export OTEL_LLM=claude            # or leave unset for the offline mock
+    export OTEL_LLM=claude
     export CLAUDE_MODEL=claude-sonnet-4-5   # override if needed
-    python3 otel_react_agent.py
 
-DEPENDENCIES: none (Python 3.8+ standard library only). The Claude backend uses
-urllib, so no pip install is required for it either.
+DEPENDENCIES: the offline fallback is Python 3.8+ standard library only (the
+Claude backend uses urllib). The Databricks backends use databricks-sdk /
+databricks-vectorsearch — see requirements.txt.
 """
 
 import os
@@ -806,9 +813,9 @@ ol{margin:8px 0 0;padding-left:18px;font-size:12.6px;line-height:1.55}
 
 <div class="foot"><b>How to extend.</b> Tools live in the <span class="kbd">TOOLS</span> registry — point
 <span class="kbd">get_network_kpis</span> / <span class="kbd">get_alarms</span> at your real U2000/ENM northbound
-API and <span class="kbd">get_bss_data</span> at your BSS. The reasoning brain is the <span class="kbd">LLMBackend</span>:
-<span class="kbd">MockLLM</span> (offline) today, <span class="kbd">ClaudeLLM</span> with an API key, and your
-<span class="kbd">OTel-LLM</span> endpoint next — same contract. Spans export as OTel-shaped JSON for your observability stack.</div>
+API and <span class="kbd">get_bss_data</span> at your BSS. The reasoning brain is the <span class="kbd">LLMBackend</span>: your served
+<span class="kbd">OTel-LLM</span> endpoint on Databricks by default, with <span class="kbd">ClaudeLLM</span> (an API key)
+and a deterministic <span class="kbd">MockLLM</span> as fallbacks — same contract. Spans export as OTel-shaped JSON for your observability stack.</div>
 </div>
 
 <script>
